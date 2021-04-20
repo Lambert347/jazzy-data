@@ -37,7 +37,17 @@ app.get('/song', (req, res) => {
         });
 })
 
-app.get('/artist')
+app.get('/artist', (req, res) => {
+    let queryText = 'SELECT * FROM artists;';
+    pool.query(queryText)
+        .then(dbResult => {
+            res.send(dbResult.rows);
+        })
+        .catch((error) => {
+            console.log(`Error from database`, error);
+            res.sendStatus(500);
+        });
+})
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
