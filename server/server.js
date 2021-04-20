@@ -17,6 +17,14 @@ const pool = new Pool({
     idleTimeoutMillis: 30000
 });
 
+pool.on('connect', () => {
+    console.log('Postgresqul connected');
+});
+
+pool.on('error', error => {
+    console.log('Error with posgres pool', pool);
+})
+
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
 });
