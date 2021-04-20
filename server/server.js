@@ -10,7 +10,7 @@ app.use(express.static('server/public'));
 const pg = require('pg');
 const { Pool } = require('pg');
 const pool = new Pool({
-    database: 'jazzy_sql',
+    database: 'jazzy.sql',
     host: 'localhost',
     port: '5432',
     max: 10,
@@ -24,6 +24,20 @@ pool.on('connect', () => {
 pool.on('error', error => {
     console.log('Error with posgres pool', pool);
 })
+
+app.get('/song', (req, res) => {
+    let queryText = 'SELECT * FROM songs;';
+    pool.query(queryText)
+        .then(dbResult => {
+            res.send(dbResult.rows);
+        })
+        .catch((error) => {
+            console.log(`Error from database`, error);
+            res.sendStatus(500);
+        });
+})
+
+app.get('/artist')
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
